@@ -7,6 +7,10 @@
 module "ecs-cluster" {
   source = "git::git@github.com:Dzhuneyt/Terraform-Module-AWS-ECS-Cluster.git"
   create_vpc = true
+
+  # Alternatively, pass an existing VPC + subnets
+  vpc_id = var.vpc_id
+  subnet_ids = var.public_subnets
 }
 ```
 
