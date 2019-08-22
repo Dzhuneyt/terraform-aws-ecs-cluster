@@ -3,14 +3,22 @@
  
  
 ## Usage
+
+The module will create a brand new VPC to house its EC2 instances:
 ```hcl-terraform
 module "ecs-cluster" {
   source = "git::git@github.com:Dzhuneyt/Terraform-Module-AWS-ECS-Cluster.git"
 
-  # The module will create a brand new VPC to house its EC2 instances
   create_vpc = true
+}
+```
 
-  # Alternatively, pass an existing VPC + subnets
+The module attaches EC2 instances to an existing VPC + subnets:
+```hcl-terraform
+module "ecs-cluster" {
+  source = "git::git@github.com:Dzhuneyt/Terraform-Module-AWS-ECS-Cluster.git"
+
+  create_vpc = false
   vpc_id = var.vpc_id
   subnet_ids = var.public_subnets
 }
