@@ -1,8 +1,8 @@
-# Create a Security Group with SSH access from the world
+# Allow EC2 instances to receive HTTP/HTTPS/SSH traffic IN and any traffic OUT
 resource "aws_security_group" "sg_for_ec2_instances" {
   name_prefix = "${var.cluster_name}_sg_for_ec2_instances_"
   description = "Security group for EC2 instances within the cluster"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.main.id
   lifecycle {
     create_before_destroy = true
   }

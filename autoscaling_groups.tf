@@ -12,7 +12,7 @@ resource "aws_autoscaling_group" "ecs_cluster_ondemand" {
   lifecycle {
     create_before_destroy = true
   }
-  vpc_zone_identifier = var.subnet_ids
+  vpc_zone_identifier = local.public_subnet_ids
 
   tags = [
     {
@@ -36,7 +36,7 @@ resource "aws_autoscaling_group" "ecs_cluster_spot" {
   lifecycle {
     create_before_destroy = true
   }
-  vpc_zone_identifier = var.subnet_ids
+  vpc_zone_identifier = local.public_subnet_ids
 
   tags = [
     {
@@ -54,7 +54,8 @@ resource "aws_autoscaling_policy" "ecs_cluster_scale_policy" {
   adjustment_type = "ChangeInCapacity"
   lifecycle {
     ignore_changes = [
-    adjustment_type]
+      adjustment_type
+    ]
   }
   autoscaling_group_name = aws_autoscaling_group.ecs_cluster_spot.name
 
