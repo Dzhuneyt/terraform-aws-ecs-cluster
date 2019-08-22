@@ -1,9 +1,8 @@
-# TODO create a new VPC if the variable vpc_id is empty
-
+# Create a new temporary VPC, to be used for this example
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "VPC of cluster ${var.cluster_name}"
+  name = "vpc-for-example-ecs-cluster"
   cidr = "10.0.0.0/16"
 
   azs = [
@@ -20,16 +19,11 @@ module "vpc" {
     "10.0.102.0/24",
   "10.0.103.0/24"]
 
-  enable_nat_gateway = true
+  enable_nat_gateway = false
   enable_vpn_gateway = false
-  single_nat_gateway = true
-  create_vpc         = var.create_vpc
 
   tags = {
     Terraform   = "true"
     Environment = "dev"
   }
-}
-locals {
-  public_subnet_ids = var.create_vpc ? module.vpc.public_subnets : var.subnet_ids
 }

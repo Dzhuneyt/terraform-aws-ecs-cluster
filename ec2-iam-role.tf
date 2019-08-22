@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "ecs_role_definition" {
   }
 }
 resource "aws_iam_role" "ecs_role" {
-  name               = "${var.cluster_name}-ec2-role"
+  name_prefix        = "${var.cluster_name}-ec2-role"
   assume_role_policy = data.aws_iam_policy_document.ecs_role_definition.json
 
   # Allows the role to be deleted and reacreated (when needed)
@@ -52,7 +52,7 @@ data "aws_iam_policy_document" "ecs_instance_role_policy_doc" {
   }
 }
 resource "aws_iam_policy" "ecs_role_permissions" {
-  name        = "${var.cluster_name}-ecs-policy"
+  name_prefix = "${var.cluster_name}-ecs-policy"
   description = "These policies allow the ECS instances to do certain actions like pull images from ECR"
   path        = "/"
   policy      = data.aws_iam_policy_document.ecs_instance_role_policy_doc.json
