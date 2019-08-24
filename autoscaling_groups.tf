@@ -37,7 +37,7 @@ resource "aws_autoscaling_group" "ecs_cluster_spot" {
   # Allow the ASG to be created through Terraform,
   # even if the price is too low or there are other
   # issues with placing the spot request
-  wait_for_elb_capacity = "0"
+  wait_for_capacity_timeout = "0"
   lifecycle {
     create_before_destroy = true
   }
