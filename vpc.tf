@@ -14,20 +14,21 @@ module "vpc" {
   private_subnets = [
     "10.0.1.0/24",
     "10.0.2.0/24",
-  "10.0.3.0/24"]
+    "10.0.3.0/24"]
   public_subnets = [
     "10.0.101.0/24",
     "10.0.102.0/24",
-  "10.0.103.0/24"]
+    "10.0.103.0/24"]
 
   enable_nat_gateway = true
   enable_vpn_gateway = false
   single_nat_gateway = true
-  create_vpc         = var.create_vpc
+  create_vpc = var.create_vpc
 
   tags = {
-    Terraform   = "true"
+    Terraform = "true"
     Environment = "dev"
+    Name = var.cluster_name
   }
 }
 locals {

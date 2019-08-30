@@ -76,4 +76,8 @@ resource "aws_autoscaling_policy" "ecs_cluster_scale_policy" {
     }
     target_value = 70.0
   }
+
+  tags = {
+    Name = var.cluster_name
+  }
 }
