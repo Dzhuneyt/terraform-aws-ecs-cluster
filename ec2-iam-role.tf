@@ -60,10 +60,6 @@ resource "aws_iam_policy" "ecs_role_permissions" {
   description = "These policies allow the ECS instances to do certain actions like pull images from ECR"
   path = "/"
   policy = data.aws_iam_policy_document.ecs_instance_role_policy_doc.json
-
-  tags = {
-    Name = var.cluster_name
-  }
 }
 
 # Attach the ECS agent IAM policy to the service Role that is assinged to each EC2 instance
