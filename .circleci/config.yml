@@ -52,7 +52,6 @@ jobs:
           name: terraform fmt
           command: |
             source $BASH_ENV
-            cd examples/cluster-with-new-vpc
             if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
               echo "Format of this terraform files is not appropiate:"
               echo
