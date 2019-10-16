@@ -71,7 +71,6 @@ jobs:
           command: |
             apk add curl
             curl -L "$(curl -s https://api.github.com/repos/wata727/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" > tflint.zip && unzip tflint.zip && rm tflint.zip
-            tflint
             cat $PATH
       - *save_repo
 
