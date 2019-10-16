@@ -1,0 +1,75 @@
+version: 2
+
+references:
+
+base_image: &base_image
+  hashicorp/terraform:light
+
+working_directory: &working_directory
+  ~/example
+
+default_config: &default_config
+  docker:
+    - image: *base_image
+  working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
+
+repo_cache_key: &repo_cache_key
+  v1-repo-{{ .Branch }}-{{ .Revision }}
+
+# Step to restore repository from cache
+restore_repo: &restore_repo
+  restore_cache:
+    key: *repo_cache_key
+
+save_repo: &save_repo
+  save_cache:
+    key: *repo_cache_key
+    paths:
+      - *working_directory
+
+set_terraform_environment: &set_terraform_environment
+  run:
+    name: set terraform environment
+    command: |
+      cd && touch $BASH_ENV
+
+      if [ "${CIRCLE_BRANCH}" == "master" ]; then
+        echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
+      else
+        echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
+      fi
+
+jobs:
+
+  lint:
+    <<: *default_config
+    steps:
+      - checkout
+      - *set_terraform_environment
+      - run:
+          name: terraform fmt
+          command: |
+            source $BASH_ENV
+            cd examples/cluster-with-new-vpc
+            if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
+              echo "Format of this terraform files is not appropiate:"
+              echo
+
+              cat fmt_result.txt
+              rm fmt_result.txt
+              git checkout -- .
+
+              echo
+              echo "Please run terraform fmt"
+
+              exit 1
+            fi
+      - *save_repo
+
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint
