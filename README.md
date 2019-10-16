@@ -2,7 +2,7 @@
  Terraform module for creating an AWS ECS cluster of EC2 instances (spot & on-demand) and an optional VPC (or reuse an existing VPC)
  
  **Build status:**
- 
+
  [![CircleCI](https://circleci.com/gh/Dzhuneyt/terraform-module-aws-ecs-cluster.svg?style=svg)](https://circleci.com/gh/Dzhuneyt/terraform-module-aws-ecs-cluster)
  
 ## Usage
@@ -28,3 +28,7 @@ module "ecs-cluster" {
 ```
 
 See the /examples directory for more scenarios.
+
+## Author
+
+[![Dzhuneyt](https://github.com/Dzhuneyt.png?size=40)](https://dzhuneyt.com)
