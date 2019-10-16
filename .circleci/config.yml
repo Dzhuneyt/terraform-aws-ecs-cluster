@@ -74,7 +74,7 @@ jobs:
             ls -la
             #mv ./tflint /usr/local/sbin/tflint
             #chmod +x /usr/local/sbin/tflint
-            #tflint -v
+            ./tflint -v
       - *save_repo
 
 workflows:
