@@ -10,7 +10,7 @@
 The module will create a brand new VPC to house its EC2 instances:
 ```hcl-terraform
 module "ecs-cluster" {
-  source = "github.com/Dzhuneyt/terraform-module-aws-ecs-cluster?ref=v1.0.6"
+  source = "github.com/Dzhuneyt/terraform-module-aws-ecs-cluster?ref=v2.0.0"
 
   create_vpc = true
 }
@@ -19,7 +19,7 @@ module "ecs-cluster" {
 The module attaches EC2 instances to an existing VPC + subnets:
 ```hcl-terraform
 module "ecs-cluster" {
-  source = "github.com/Dzhuneyt/terraform-module-aws-ecs-cluster?ref=v1.0.6"
+  source = "github.com/Dzhuneyt/terraform-module-aws-ecs-cluster?ref=v2.0.0"
 
   create_vpc = false
   vpc_id = var.vpc_id
