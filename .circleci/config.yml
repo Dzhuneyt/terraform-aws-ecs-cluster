@@ -69,10 +69,9 @@ jobs:
           name: Install tflint
           command: |
             apk add curl
-            wget https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh
-            ls -la
-            chmod +x install_linux.sh
-            /bin/bash install_linux.sh
+            curl -L "$(curl -Ls https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" -o tflint.zip
+            echo Unzipping && unzip tflint.zip
+            echo Cleaning up && rm tflint.zip
             tflint -v
       - run:
           name: Terraform lint
