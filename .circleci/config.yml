@@ -73,6 +73,7 @@ jobs:
             echo Unzipping && unzip tflint.zip
             echo Cleaning up && rm tflint.zip
             ls -la
+            chmod +x tflint
             tflint -v
       - run:
           name: Terraform lint
