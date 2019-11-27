@@ -72,7 +72,6 @@ jobs:
             curl -L "$(curl -Ls https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" -o tflint.zip
             echo Unzipping && unzip tflint.zip
             echo Cleaning up && rm tflint.zip
-            ls -la
             chmod +x tflint
             ./tflint -v
       - run:
