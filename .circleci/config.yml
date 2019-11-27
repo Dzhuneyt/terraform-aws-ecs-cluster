@@ -74,7 +74,7 @@ jobs:
             echo Cleaning up && rm tflint.zip
             ls -la
             chmod +x tflint
-            tflint -v
+            ./tflint -v
       - run:
           name: Terraform lint
           command: ./tflint
