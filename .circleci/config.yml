@@ -3,7 +3,7 @@ version: 2
 references:
 
 base_image: &base_image
-  hashicorp/terraform:light
+  hashicorp/terraform:full
 
 working_directory: &working_directory
   ~/example
