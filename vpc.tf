@@ -1,7 +1,7 @@
 # TODO create a new VPC if the variable vpc_id is empty
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
   version = "~>2.20"
 
   name = "VPC of cluster ${var.cluster_name}"
@@ -21,10 +21,10 @@ module "vpc" {
     "10.0.102.0/24",
   "10.0.103.0/24"]
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = false
-  single_nat_gateway = true
-  create_vpc         = var.create_vpc
+  enable_nat_gateway  = true
+  enable_vpn_gateway  = false
+  single_nat_gateway  = true
+  create_vpc          = var.create_vpc
   enable_efs_endpoint = false
 
   tags = {
