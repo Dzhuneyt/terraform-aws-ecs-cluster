@@ -1,5 +1,5 @@
 module "ecs-cluster-with-new-vpc" {
-  source = "github.com/Dzhuneyt/terraform-module-aws-ecs-cluster?ref=v1.0.5"
+  source = "../../"
 
   cluster_name = "with-new-vpc"
 
