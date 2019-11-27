@@ -68,13 +68,8 @@ jobs:
       - run:
           name: Install tflint
           command: |
-            apk add curl wget
-            wget https://github.com/terraform-linters/tflint/releases/download/v0.13.1/tflint_darwin_amd64.zip
-            unzip tflint_darwin_amd64.zip
-            mkdir -p /usr/local/tflint/bin
-            export PATH=/usr/local/tflint/bin:$PATH
-            install tflint /usr/local/tflint/bin
-            chmod +x /usr/local/tflint/bin/tflint
+            apk add curl
+            curl -L "$(curl -Ls https://api.github.com/repos/terraform-linters/tflint/releases/latest | grep -o -E "https://.+?_linux_amd64.zip")" -o tflint.zip && unzip tflint.zip && rm tflint.zip
             tflint -v
       - run:
           name: Terraform lint
