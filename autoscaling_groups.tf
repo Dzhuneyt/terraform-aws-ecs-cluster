@@ -8,19 +8,20 @@ resource "aws_autoscaling_group" "ecs_cluster_ondemand" {
   max_size                  = var.max_ondmand_instances
   min_size                  = var.min_ondemand_instances
   desired_capacity          = var.min_ondemand_instances
-  launch_configuration      = aws_launch_configuration.ecs_config_launch_config_ondemand.name
+  launch_template {
+    id      = aws_launch_template.ecs_launch_template_ondemand.id
+    version = "$Latest"
+  }
   lifecycle {
     create_before_destroy = true
   }
   vpc_zone_identifier = local.public_subnet_ids
 
-  tags = [
-    {
-      key                 = "Name"
-      value               = var.cluster_name,
-      propagate_at_launch = true
-    }
-  ]
+  tag {
+    key                 = "Name"
+    value               = var.cluster_name
+    propagate_at_launch = true
+  }
 }
 
 resource "aws_autoscaling_group" "ecs_cluster_spot" {
@@ -32,7 +33,10 @@ resource "aws_autoscaling_group" "ecs_cluster_spot" {
   max_size                  = var.max_spot_instances
   min_size                  = var.min_spot_instances
   desired_capacity          = var.min_spot_instances
-  launch_configuration      = aws_launch_configuration.ecs_config_launch_config_spot.name
+  launch_template {
+    id      = aws_launch_template.ecs_launch_template_spot.id
+    version = "$Latest"
+  }
 
   # Allow the ASG to be created through Terraform,
   # even if the price is too low or there are other
@@ -43,13 +47,11 @@ resource "aws_autoscaling_group" "ecs_cluster_spot" {
   }
   vpc_zone_identifier = local.public_subnet_ids
 
-  tags = [
-    {
-      key                 = "Name"
-      value               = var.cluster_name,
-      propagate_at_launch = true
-    }
-  ]
+  tag {
+    key                 = "Name"
+    value               = var.cluster_name
+    propagate_at_launch = true
+  }
 }
 
 # Attach an autoscaling policy to the spot cluster to target 70% MemoryReservation on the ECS cluster.

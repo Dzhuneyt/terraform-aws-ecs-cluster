@@ -2,7 +2,7 @@
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~>2.20"
+  version = "~> 5.0"
 
   name = "VPC of cluster ${var.cluster_name}"
   cidr = "10.0.0.0/16"
@@ -21,11 +21,10 @@ module "vpc" {
     "10.0.102.0/24",
   "10.0.103.0/24"]
 
-  enable_nat_gateway  = true
-  enable_vpn_gateway  = false
-  single_nat_gateway  = true
-  create_vpc          = var.create_vpc
-  enable_efs_endpoint = false
+  enable_nat_gateway = true
+  enable_vpn_gateway = false
+  single_nat_gateway = true
+  create_vpc         = var.create_vpc
 
   tags = {
     Terraform   = "true"

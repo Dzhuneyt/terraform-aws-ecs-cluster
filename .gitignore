@@ -10,3 +10,6 @@
 
 # Ignore PHPStorm IDE settings
 .idea
+
+# Ignore the lock file, because this is a Terraform module
+.terraform.lock.hcl
