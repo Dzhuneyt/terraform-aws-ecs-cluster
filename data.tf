@@ -1,6 +1,3 @@
-data "aws_region" "current" {
-  name = var.aws_region
-}
 data "aws_vpc" "main" {
   id = var.create_vpc ? module.vpc.vpc_id : var.vpc_id
 }
