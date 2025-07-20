@@ -5,8 +5,6 @@ resource "aws_launch_template" "ecs_launch_template_spot" {
   instance_type = var.instance_type_spot
   key_name      = var.ssh_key_name
 
-  vpc_security_group_ids = [aws_security_group.sg_for_ec2_instances.id]
-
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_iam_instance_profile.name
   }
@@ -52,8 +50,6 @@ resource "aws_launch_template" "ecs_launch_template_ondemand" {
   image_id      = data.aws_ami.ecs.id
   instance_type = var.instance_type_ondemand
   key_name      = var.ssh_key_name
-
-  vpc_security_group_ids = [aws_security_group.sg_for_ec2_instances.id]
 
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_iam_instance_profile.name
