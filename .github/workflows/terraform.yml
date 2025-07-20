@@ -1,0 +1,112 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+env:
+  TF_VERSION: "1.5.7"  # Using a modern Terraform version
+  TFLINT_VERSION: "v0.48.0"  # Latest stable TFLint version
+
+jobs:
+  terraform-lint:
+    name: Terraform Lint and Format Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+        
+    - name: Set environment based on branch
+      run: |
+        if [ "${{ github.ref }}" == "refs/heads/master" ] || [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          echo "TERRAFORM_ENVIRONMENT=production" >> $GITHUB_ENV
+        else
+          echo "TERRAFORM_ENVIRONMENT=staging" >> $GITHUB_ENV
+        fi
+        
+    - name: Terraform Format Check
+      run: |
+        terraform fmt -check -recursive
+        if [ $? -ne 0 ]; then
+          echo "❌ Terraform files are not properly formatted"
+          echo "Please run 'terraform fmt -recursive' to fix formatting issues"
+          exit 1
+        else
+          echo "✅ All Terraform files are properly formatted"
+        fi
+        
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v4
+      with:
+        tflint_version: ${{ env.TFLINT_VERSION }}
+        
+    - name: Initialize TFLint
+      run: tflint --init
+      
+    - name: Run TFLint
+      run: |
+        echo "🔍 Running TFLint..."
+        tflint --format compact
+        if [ $? -eq 0 ]; then
+          echo "✅ TFLint passed successfully"
+        else
+          echo "❌ TFLint found issues"
+          exit 1
+        fi
+
+  terraform-validate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+        
+    - name: Terraform Init
+      run: terraform init -backend=false
+      
+    - name: Terraform Validate
+      run: |
+        echo "🔍 Validating Terraform configuration..."
+        terraform validate
+        if [ $? -eq 0 ]; then
+          echo "✅ Terraform configuration is valid"
+        else
+          echo "❌ Terraform configuration is invalid"
+          exit 1
+        fi
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
